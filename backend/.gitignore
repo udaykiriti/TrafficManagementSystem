@@ -1,0 +1,36 @@
+venv/
+__pycache__/
+outputs/
+*.mp4
+*.avi
+*.mov
+uploads/
+*.mp4
+*.avi
+*.mov# Python venv
+.venv/
+venv/
+ENV/
+env/
+
+# video folders
+videos/
+raw_videos/
+
+# screenshots
+screenshots/
+
+# common video extensions
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# node deps / build (if relevant)
+node_modules/
+build/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

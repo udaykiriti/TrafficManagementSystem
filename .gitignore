@@ -1,0 +1,27 @@
+node_modules/
+build/
+outputs/
+*.mp4
+*.avi
+*.mov
+uploads/
+*.mp4
+*.avi
+*.mov
+
+# react files
+.env*
+.pnp
+.pnp.js
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# system
+.DS_Store
+
+# don't track lock or packages
+package.json
+package-lock.json
