@@ -18,3 +18,5 @@ timestamp,total_cars,avg_green_time,max_congestion_direction,congestion_level,op
 2026-01-15T22:21:15.292700,86,37.0,North,high,success
 2026-01-16T09:55:54.537542,86,37.0,North,high,success
 2026-01-16T10:34:53.073655,86,37.0,North,high,success
+2026-01-16T14:40:57.338535,86,37.0,North,high,success
+2026-01-16T14:52:26.870459,86,37.0,North,high,success
