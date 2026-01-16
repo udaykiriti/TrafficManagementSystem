@@ -49,4 +49,4 @@ yarn-error.log*
 Thumbs.db
 
 # model weights
-.weights
+*.weights
