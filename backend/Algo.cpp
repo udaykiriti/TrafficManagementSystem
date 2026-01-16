@@ -105,32 +105,22 @@ initialize_population(int pop_size, int num_lights, int green_min,
   return population;
 }
 
-struct SelectionInfo {
-  discrete_distribution<int> dist;
-};
-
-SelectionInfo prepare_selection(const vector<population_element> &population,double beta) {
+// Tournament Selection: faster (O(k)) and stable pressure
+int tournament_selection(const vector<population_element> &population, int k, mt19937 &local_rng) {
   int n = (int)population.size();
-  if (n == 0)
-    return {};
+  uniform_int_distribution<int> dist(0, n - 1);
+  
+  int best_idx = dist(local_rng);
+  double best_val = population[best_idx].second;
 
-  double min_delay = population.front().second;
-  double worst = population.back().second;
-  vector<double> weights(n);
-
-  if (worst <= min_delay) {
-    fill(weights.begin(), weights.end(), 1.0);
-  } else {
-    for (int i = 0; i < n; ++i) {
-      weights[i] =
-          exp(-beta * (population[i].second - min_delay) / (worst - min_delay));
+  for (int i = 1; i < k; ++i) {
+    int idx = dist(local_rng);
+    if (population[idx].second < best_val) {
+      best_val = population[idx].second;
+      best_idx = idx;
     }
   }
-  return {discrete_distribution<int>(weights.begin(), weights.end())};
-}
-
-int roulette_wheel_selection(const SelectionInfo &info, mt19937 &local_rng) {
-  return const_cast<discrete_distribution<int> &>(info.dist)(local_rng);
+  return best_idx;
 }
 
 pair<vi, vi> crossover(const vi &p1, const vi &p2, mt19937 &local_rng) {
@@ -201,9 +191,10 @@ genetic_algorithm(int pop_size, int num_lights, int max_iter, int green_min,
   const int EARLY_STOP_PATIENCE = 5;
   int no_improvement_count = 0;
   double prev_best = best_sol.second;
+  const int TOURNAMENT_SIZE = 4; // Selection pressure
 
   for (int iter = 0; iter < max_iter; ++iter) {
-    SelectionInfo sel_info = prepare_selection(population, beta);
+    // Tournament selection does not require global preparation (O(N))
     vector<population_element> next_gen(pop_size);
 
     // Elitism: carry over the best
@@ -218,8 +209,8 @@ genetic_algorithm(int pop_size, int num_lights, int max_iter, int green_min,
 
 #pragma omp for schedule(static)
       for (int i = 1; i < pop_size; i += 2) {
-        int i1 = roulette_wheel_selection(sel_info, local_rng);
-        int i2 = roulette_wheel_selection(sel_info, local_rng);
+        int i1 = tournament_selection(population, TOURNAMENT_SIZE, local_rng);
+        int i2 = tournament_selection(population, TOURNAMENT_SIZE, local_rng);
 
         auto children =
             crossover(population[i1].first, population[i2].first, local_rng);
