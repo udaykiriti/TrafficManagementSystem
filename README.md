@@ -1,4 +1,10 @@
 # AI Traffic Management System
+[![Frontend](https://img.shields.io/badge/frontend-React-61dafb?logo=react&logoColor=white)](#)
+[![Backend](https://img.shields.io/badge/backend-Flask-000?logo=flask&logoColor=white)](#)
+[![Vision](https://img.shields.io/badge/vision-YOLOv4-ff6f00)](#)
+[![Optimizer](https://img.shields.io/badge/optimizer-C%2B%2B17-00599c?logo=c%2B%2B&logoColor=white)](#)
+[![Container](https://img.shields.io/badge/infra-Docker-2496ed?logo=docker&logoColor=white)](#)
+
 An AI based traffic management system with real-time monitoring
 
 ## Tags
@@ -74,7 +80,7 @@ make down       # Stop services
 make clean      # Clean up containers and volumes
 ```
 
-See [README.Docker.md](README.Docker.md) for detailed Docker documentation.
+See [README.Docker.md](docs/docker/docker-readme.md) for detailed Docker documentation.
 
 ### Option 2: Manual Setup
 
