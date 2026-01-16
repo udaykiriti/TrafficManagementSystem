@@ -4,7 +4,7 @@ The **AI Traffic Management System** is a sophisticated solution designed to opt
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 The system operates on a modular architecture comprising four main components:
 
@@ -40,7 +40,7 @@ The system operates on a modular architecture comprising four main components:
 
 ---
 
-## 🔄 Data Flow
+##  Data Flow
 
 1.  **Input:** User uploads 4 video files (one per lane) OR connects 4 live RTSP streams.
 2.  **Processing:**
@@ -52,7 +52,7 @@ The system operates on a modular architecture comprising four main components:
 
 ---
 
-## 📂 Key Directories & Files
+##  Key Directories & Files
 
 | Path | Description |
 | :--- | :--- |
@@ -66,7 +66,7 @@ The system operates on a modular architecture comprising four main components:
 
 ---
 
-## 🚀 Execution Modes
+##  Execution Modes
 
 ### API Mode (Server)
 The standard mode for web interaction.
@@ -80,7 +80,7 @@ A headless mode for processing live streams directly.
 
 ---
 
-## 📊 Analytics
+##  Analytics
 The system persists performance data to CSV files in `backend/data/`:
 - `results.csv`: Log of every optimization run (inputs vs. outputs).
 - `analytics.csv`: Aggregated system performance metrics.
