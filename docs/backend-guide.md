@@ -1,62 +1,116 @@
-# Backend Usage Guide
+# Backend Technical Guide
 
-This covers running the Flask API and the live camera helper without touching the Docker stack.
+This document provides a deep dive into the backend architecture, configuration, and manual operation.
 
-## Prerequisites
-- Python 3.9+ with `pip install -r backend/requirements.txt`
-- YOLO weights/config in `backend/` (run `bash backend/download.sh`)
-- C++ optimizer compiled: `g++ -std=c++17 -O3 -fopenmp -o backend/Algo1 backend/Algo.cpp`
-- Ensure `backend/uploads`, `backend/outputs`, and `backend/data` are writable
+---
 
-## Modes
+## 🛠️ Prerequisites (Manual Setup)
 
-### 1) API mode (default)
+If you are not using Docker, ensure your environment meets these requirements:
+
+1.  **Python 3.10+**: with dependencies installed via `pip install -r backend/requirements.txt`.
+2.  **GCC Compiler**: Support for C++17 and OpenMP (`sudo apt install build-essential`).
+3.  **YOLO Weights**: Downloaded to `backend/` using `bash backend/download.sh`.
+4.  **Directory Structure**: The following folders must exist and be writable:
+    *   `backend/uploads/`
+    *   `backend/outputs/`
+    *   `backend/data/`
+
+---
+
+## 🖥️ Server API Mode
+
+The Flask application acts as a RESTful API.
+
+### Starting the Server
 ```bash
 cd backend
 python app.py
 ```
-Endpoints:
-- `POST /upload` — multipart form with exactly 4 files under key `videos`
-  - Allowed extensions: .mp4 .avi .mov .mkv .webm .flv .wmv
-  - MIME must start with `video/`
-  - Max per-file size: `MAX_UPLOAD_SIZE_MB` (default 200 MB) env; total capped by Flask `MAX_CONTENT_LENGTH`
-- `GET /stats` — summary of CSV logs
-- `GET /health` — component readiness (weights/binary presence)
 
-Rate limiting (per-IP): `RATE_LIMIT_REQUESTS` (default 10) per `RATE_LIMIT_WINDOW` seconds (default 60).
-CSV logs are written to `backend/data/` (`results.csv`, `analytics.csv`).
+### Key Endpoints
 
-### 2) Live camera mode
-Runs detection on 4 live streams and prints optimizer + RL output (does not start the API server).
+| Method | Endpoint | Description | 
+| :--- | :--- | :--- | 
+| `POST` | `/upload` | **Main Endpoint.** Accepts 4 video files (`videos` key). Returns optimized timings. | 
+| `GET` | `/health` | Checks if weights exist and the binary is compiled. | 
+| `GET` | `/stats` | Returns aggregated analytics from CSV logs. | 
+
+### Configuration (Environment Variables)
+
+| Variable | Default | Description | 
+| :--- | :--- | :--- | 
+| `MAX_UPLOAD_SIZE_MB` | `200` | Max size per uploaded video file (MB). | 
+| `RATE_LIMIT_REQUESTS`| `10` | Max requests allowed per IP. | 
+| `RATE_LIMIT_WINDOW` | `60` | Time window for rate limiting (seconds). | 
+| `DEBUG_UPLOAD` | `1` | Enable verbose debug output in API responses. | 
+
+---
+
+## 🎥 Live Camera Mode (Edge Deployment)
+
+This mode bypasses the Flask server and processes video streams directly. Ideal for deployment on edge devices like NVIDIA Jetson.
+
+### Command Syntax
 ```bash
-cd backend
-python app.py --real --camera rtsp://cam1 --camera rtsp://cam2 --camera rtsp://cam3 --camera 0
-# or via env
-CAM_SOURCES=rtsp://cam1,rtsp://cam2,rtsp://cam3,0 python app.py --real
+python app.py --real --camera <source1> --camera <source2> --camera <source3> --camera <source4>
 ```
-Requirements: four accessible sources (RTSP/HTTP URLs or device indices). Add `--verbose` to log optimizer output.
 
-## Environment Variables
-- `MAX_UPLOAD_SIZE_MB` — per-file size limit in MB (default 200)
-- `DEBUG_UPLOAD` — when `1`, includes extra debug info in responses (default 1)
-- `RATE_LIMIT_REQUESTS` / `RATE_LIMIT_WINDOW` — rate limit settings
-- `CAM_SOURCES` — comma-separated camera list for `--real` mode
+### Sources
+- **RTSP:** `rtsp://user:pass@ip:port/stream`
+- **HTTP:** `http://ip:port/video`
+- **USB/Local:** `0`, `1` (Device Index)
 
-## Quick Testing
+### Example
 ```bash
-# With local sample videos
-curl -F "videos=@uploads/video_0.mp4" \
-     -F "videos=@uploads/video_1.mp4" \
-     -F "videos=@uploads/video_2.mp4" \
-     -F "videos=@uploads/video_3.mp4" \
-     http://localhost:5000/upload
+# Using Environment Variable
+export CAM_SOURCES="rtsp://cam1,rtsp://cam2,rtsp://cam3,0"
+python app.py --real
+```
 
+---
+
+## 🧠 The Genetic Algorithm (C++)
+
+The core optimization logic resides in `backend/Algo.cpp`.
+
+### Compilation
+The binary must be compiled with OpenMP support for parallel processing.
+```bash
+g++ -std=c++17 -O3 -fopenmp -o backend/Algo1 backend/Algo.cpp
+```
+
+### Input/Output Interface
+- **Input:** Space-separated integers representing vehicle counts for 4 lanes.
+- **Output:** Space-separated integers representing green light duration (in seconds) for each lane.
+
+---
+
+## 🧪 Testing & Validation
+
+### Health Check
+```bash
 curl http://localhost:5000/health
-curl http://localhost:5000/stats
 ```
 
-## Troubleshooting
-- Missing weights/config: re-run `bash backend/download.sh`
-- Optimizer missing: recompile `Algo1`
-- Permissions: ensure `backend/uploads` and `backend/data` are writable
-- Oversized/invalid uploads: check extensions/MIME and `MAX_UPLOAD_SIZE_MB`
+### Upload Test
+```bash
+curl -F "videos=@lane1.mp4" \
+     -F "videos=@lane2.mp4" \
+     -F "videos=@lane3.mp4" \
+     -F "videos=@lane4.mp4" \
+     http://localhost:5000/upload
+```
+
+---
+
+## ⚠️ Troubleshooting
+
+**Issue: `Algo1` not found**
+*   **Fix:** Run the compilation command listed above.
+
+**Issue: YOLO weights missing**
+*   **Fix:** Run `bash backend/download.sh`.
+
+**Issue: 413 Request Entity Too Large**
+*   **Fix:** Increase `MAX_UPLOAD_SIZE_MB` in `.env` or check Flask's `MAX_CONTENT_LENGTH`.
