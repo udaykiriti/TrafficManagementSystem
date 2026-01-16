@@ -7,17 +7,9 @@
 
 An AI based traffic management system with real-time monitoring
 
-## Tags
-- computer-vision
-- traffic-management
-- yolo
-- flask
-- react
-- genetic-algorithm
-- reinforcement-learning
-- docker
-- devops
+## Demo
 
+![Traffic demo placeholder](https://dummyimage.com/960x540/0b1c2c/ffffff&text=Traffic+Flow+Demo+GIF+Placeholder)
 
 ## Overview
 
@@ -46,7 +38,7 @@ The Smart Adaptive Traffic Management System leverages AI and computer vision to
 **Prerequisites:**
 - Docker Engine 20.10+
 - Docker Compose 2.0+
-- 4GB+ RAM for Docker
+- 4GB+ RAM for Docker [prefer more for some smoooth operatorr...]
 
 **Quick Start:**
 
@@ -80,7 +72,7 @@ make down       # Stop services
 make clean      # Clean up containers and volumes
 ```
 
-See [README.Docker.md](docs/docker/docker-readme.md) for detailed Docker documentation.
+See [Docker docs](docs/docker/docker-readme.md) for detailed Docker documentation.
 
 ### Option 2: Manual Setup
 
