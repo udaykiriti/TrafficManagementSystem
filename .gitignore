@@ -13,6 +13,7 @@ outputs/
 *.avi
 *.mov
 uploads/
+media/
 
 # Logs
 npm-debug.log*
