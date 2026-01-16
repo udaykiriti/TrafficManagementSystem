@@ -1,27 +1,26 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Node modules and build
 node_modules/
 build/
+
+# Videos
 outputs/
 *.mp4
 *.avi
 *.mov
 uploads/
-*.mp4
-*.avi
-*.mov
 
-# react files
-.env*
-.pnp
-.pnp.js
-
-# logs
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# system
+# System
 .DS_Store
 
-# don't track lock or packages
-package.json
+# Lock files (keep package.json)
 package-lock.json

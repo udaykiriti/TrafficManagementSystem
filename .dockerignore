@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+env/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# Large model files (download separately)
+*.weights
+
+# Uploads and outputs (mounted as volumes)
+uploads/
+outputs/
+
+# Test videos
+*.mp4
+*.avi
+*.mov
+
+# Keys
+*.pub
+github_pat_*

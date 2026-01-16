@@ -1,0 +1,55 @@
+version: '3.8'
+
+# Development environment with hot reload
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: traffic-backend-dev
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount source code for hot reload
+      - ./backend:/app
+      - /app/__pycache__
+      # Persist data
+      - ./backend/uploads:/app/uploads
+      - ./backend/outputs:/app/outputs
+      - ./backend/data:/app/data
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - DEBUG_UPLOAD=1
+      - PYTHONUNBUFFERED=1
+    command: python app.py
+    restart: unless-stopped
+    networks:
+      - traffic-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: traffic-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source for hot reload
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - traffic-network
+    stdin_open: true
+    tty: true
+
+networks:
+  traffic-network:
+    driver: bridge
