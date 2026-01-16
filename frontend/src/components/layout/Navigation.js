@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import styles, { m3 } from '../styles';
+import React from 'react';
+import styles, { m3 } from '../../styles';
+import useHealth from '../../hooks/useHealth';
 
 const tabs = [
     { id: 'home', label: 'Home', icon: '' },
@@ -9,28 +10,7 @@ const tabs = [
 ];
 
 function Navigation({ activeTab, setActiveTab }) {
-    const [health, setHealth] = useState({ status: 'checking', components: {} });
-
-    useEffect(() => {
-        checkHealth();
-        // Check health every 30 seconds
-        const interval = setInterval(checkHealth, 30000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const checkHealth = async () => {
-        try {
-            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/health`, {
-                method: 'GET',
-                signal: AbortSignal.timeout(5000) // 5 second timeout
-            });
-            const data = await response.json();
-            setHealth(data);
-        } catch (err) {
-            setHealth({ status: 'offline', components: {} });
-        }
-    };
+    const { health, checkHealth } = useHealth();
 
     const getStatusColor = () => {
         switch (health.status) {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './styles';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
-import Home from './components/Home';
-import Analytics from './components/Analytics';
-import HowItWorks from './components/HowItWorks';
-import About from './components/About';
+import Navigation from './components/layout/Navigation';
+import Footer from './components/layout/Footer';
+import Home from './pages/Home';
+import Analytics from './pages/Analytics';
+import HowItWorks from './pages/HowItWorks';
+import About from './pages/About';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');

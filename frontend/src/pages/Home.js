@@ -1,5 +1,6 @@
 import React from 'react';
 import styles, { m3 } from '../styles';
+import { getApiBase } from '../api/client';
 
 function Home({ selectedFiles, setSelectedFiles, loading, setLoading, progress, setProgress, result, setResult }) {
 
@@ -31,7 +32,7 @@ function Home({ selectedFiles, setSelectedFiles, loading, setLoading, progress, 
         selectedFiles.forEach(file => formData.append('videos', file));
 
         try {
-            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+            const apiUrl = getApiBase();
             const response = await fetch(`${apiUrl}/upload`, {
                 method: 'POST',
                 body: formData,
