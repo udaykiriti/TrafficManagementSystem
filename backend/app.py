@@ -349,7 +349,8 @@ def upload_files():
     app.logger.info("Starting parallel video detection for %d videos", len(video_paths))
     
     try:
-        results, errors = detect_cars_parallel(video_paths, max_workers=2)
+        # Allow up to 4 parallel workers (one per lane) to maximize CPU usage
+        results, errors = detect_cars_parallel(video_paths, max_workers=4)
         
         num_cars_list = results
         detection_errors = []

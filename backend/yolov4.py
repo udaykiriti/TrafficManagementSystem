@@ -31,7 +31,7 @@ CONF_THRESHOLD = 0.2         # Detection confidence threshold
 NMS_THRESHOLD = 0.4          # Non-maximum suppression threshold
 INPUT_SIZE = 416             # Input resolution (lower = faster, higher = more accurate)
 SKIP_FRAMES = 5              # Process 1 frame every (SKIP_FRAMES + 1)
-MAX_PARALLEL_WORKERS = 2     # Max concurrent processes
+MAX_PARALLEL_WORKERS = max(4, mp.cpu_count())     # Max concurrent processes (default to at least 4 for 4 lanes)
 
 # <!--- Target classes (COCO) ---->
 VEHICLE_CLASSES = {'car', 'motorbike', 'bus', 'truck', 'bicycle'}
