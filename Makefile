@@ -34,7 +34,7 @@ up:
 
 # Start services (Development)
 dev:
-	@echo "🛠️  Starting services (Development)..."
+	@echo "  Starting services (Development)..."
 	docker-compose -f docker-compose.dev.yml up --build
 
 # Stop services
