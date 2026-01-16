@@ -1,67 +1,86 @@
-# Makefile for AI Traffic Management System
+# AI Traffic Management System Makefile
+
+# Variables
+DC_PROD := docker-compose
+DC_DEV  := docker-compose -f docker-compose.dev.yml
+SHELL   := /bin/bash
+
+# Colors for terminal output
+BLUE   := \033[34m
+CYAN   := \033[36m
+GREEN  := \033[32m
+RESET  := \033[0m
+BOLD   := \033[1m
 
 .PHONY: help setup up down logs status clean dev restart shell-backend shell-frontend
 
-# Default target: Help
+# --- HELP ---
+define HEADER
+    ___    ____   ______ ____   ___     ______ ______  ____  ______
+   /   |  /  _/  /_  __// __ \ /   |   / ____// ____/ /  _/ / ____/
+  / /| |  / /     / /  / /_/ // /| |  / /_   / /_     / /  / /     
+ / ___ | _/ /    / /  / _, _// ___ | / __/  / __/   _/ /  / /___   
+/_/  |_|/___/   /_/  /_/ |_|/_/  |_|/_/    /_/     /___/  \____/   
+                                                                   
+endef
+export HEADER
+
 help:
-	@echo " AI Traffic Management System - Make Commands"
-	@echo "==============================================="
-	@echo "  make setup        - Download weights and build Docker images"
-	@echo "  make up           - Start all services in production mode (detached)"
-	@echo "  make dev          - Start all services in development mode"
-	@echo "  make down         - Stop all services"
-	@echo "  make restart      - Restart all services"
-	@echo "  make logs         - View logs from all services"
-	@echo "  make status       - Check status of containers"
-	@echo "  make clean        - Stop services and remove containers/volumes"
-	@echo "  make shell-backend  - Access backend container shell"
-	@echo "  make shell-frontend - Access frontend container shell"
+	@echo -e "$(BLUE)$$HEADER$(RESET)"
+	@echo -e "$(BOLD)Management Commands:$(RESET)"
+	@echo -e "  $(CYAN)make setup$(RESET)          Download weights and build Docker images"
+	@echo -e "  $(CYAN)make up$(RESET)             Start services in production mode (detached)"
+	@echo -e "  $(CYAN)make dev$(RESET)            Start services in development mode"
+	@echo -e "  $(CYAN)make down$(RESET)           Stop all services"
+	@echo -e "  $(CYAN)make restart$(RESET)        Restart all services"
+	@echo -e "  $(CYAN)make logs$(RESET)           View logs from all services"
+	@echo -e "  $(CYAN)make status$(RESET)         Check status of containers"
+	@echo -e "  $(CYAN)make clean$(RESET)          Remove containers, volumes, and local images"
+	@echo -e ""
+	@echo -e "$(BOLD)Shell Access:$(RESET)"
+	@echo -e "  $(CYAN)make shell-backend$(RESET)   Access backend container"
+	@echo -e "  $(CYAN)make shell-frontend$(RESET)  Access frontend container"
 
-# Setup: Download weights and build images
+# --- CORE COMMANDS ---
+
 setup:
-	@echo "  Downloading YOLO weights..."
+	@echo -e "$(GREEN)>>> Downloading YOLO weights...$(RESET)"
 	cd backend && bash download.sh
-	@echo "  Building Docker images..."
-	docker-compose build
+	@echo -e "$(GREEN)>>> Building Docker images...$(RESET)"
+	$(DC_PROD) build
 
-# Start services (Production)
 up:
-	@echo " Starting services (Production)..."
-	docker-compose up -d
-	@echo " Services started!"
-	@echo "   Frontend: http://localhost:3000"
-	@echo "   Backend:  http://localhost:5000"
+	@echo -e "$(GREEN)>>> Starting services (Production)...$(RESET)"
+	$(DC_PROD) up -d
+	@echo -e "$(BOLD)Services available at:$(RESET)"
+	@echo -e "  Frontend: http://localhost:3000"
+	@echo -e "  Backend:  http://localhost:5000"
 
-# Start services (Development)
 dev:
-	@echo "  Starting services (Development)..."
-	docker-compose -f docker-compose.dev.yml up --build
+	@echo -e "$(GREEN)>>> Starting services (Development)...$(RESET)"
+	$(DC_DEV) up --build
 
-# Stop services
 down:
-	@echo " Stopping services..."
-	docker-compose down
+	@echo -e "$(CYAN)>>> Stopping services...$(RESET)"
+	$(DC_PROD) down
 
-# Restart services
 restart: down up
 
-# View logs
 logs:
-	docker-compose logs -f
+	$(DC_PROD) logs -f
 
-# Check status
 status:
-	docker-compose ps
+	$(DC_PROD) ps
 
-# Clean everything
 clean:
-	@echo " Cleaning up..."
-	docker-compose down -v --rmi local
-	@echo " Clean complete."
+	@echo -e "$(CYAN)>>> Deep cleaning containers and volumes...$(RESET)"
+	$(DC_PROD) down -v --rmi local
+	@echo -e "$(GREEN)>>> Clean complete.$(RESET)"
 
-# Shell access
+# --- SHELL ACCESS ---
+
 shell-backend:
-	docker-compose exec backend bash
+	$(DC_PROD) exec backend bash
 
 shell-frontend:
-	docker-compose exec frontend sh
+	$(DC_PROD) exec frontend sh
