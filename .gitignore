@@ -47,3 +47,6 @@ yarn-error.log*
 # System
 .DS_Store
 Thumbs.db
+
+# model weights
+.weights
