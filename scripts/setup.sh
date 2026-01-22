@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# =============================================================================
 # COMPLETE PROJECT SETUP AND RUN SCRIPT
-# Dynamic Traffic Management System
-# =============================================================================
+# AI Traffic Management System
 
 set -e  # Exit on error
 
@@ -42,9 +40,7 @@ cat << "EOF"
 ================================
 EOF
 
-# =============================================================================
 # STEP 1: Check Prerequisites
-# =============================================================================
 print_step "Checking prerequisites..."
 
 MISSING_DEPS=0
@@ -74,9 +70,7 @@ if [ $MISSING_DEPS -gt 0 ]; then
     exit 1
 fi
 
-# =============================================================================
 # STEP 2: Download YOLO Weights
-# =============================================================================
 print_step "Checking YOLO weights..."
 
 if [ -f "backend/yolov4-tiny.weights" ]; then
@@ -103,9 +97,7 @@ else
     fi
 fi
 
-# =============================================================================
 # STEP 3: Create Environment Files
-# =============================================================================
 print_step "Setting up environment files..."
 
 # Backend .env
@@ -143,9 +135,7 @@ else
     print_success "frontend/.env already exists"
 fi
 
-# =============================================================================
 # STEP 4: Create Required Directories
-# =============================================================================
 print_step "Creating required directories..."
 
 mkdir -p backend/uploads
@@ -154,9 +144,7 @@ mkdir -p backend/data
 
 print_success "Directories created: uploads, outputs, data"
 
-# =============================================================================
 # STEP 5: Ask User for Deployment Mode
-# =============================================================================
 print_step "Choose deployment mode..."
 
 echo ""
@@ -167,9 +155,7 @@ echo ""
 read -p "Enter your choice [1-2]: " MODE_CHOICE
 
 if [ "$MODE_CHOICE" = "1" ]; then
-    # =============================================================================
     # DOCKER MODE
-    # =============================================================================
     print_step "Setting up Docker deployment..."
     
     echo ""
@@ -212,9 +198,7 @@ if [ "$MODE_CHOICE" = "1" ]; then
     echo "    Health:    http://localhost:5000/health"
     
 elif [ "$MODE_CHOICE" = "2" ]; then
-    # =============================================================================
     # MANUAL MODE
-    # =============================================================================
     print_step "Setting up manual deployment..."
     
     # Check Python
@@ -316,14 +300,10 @@ else
     exit 1
 fi
 
-# =============================================================================
 # Final Steps
-# =============================================================================
 echo ""
 cat << "EOF"
-========================================
-           SETUP COMPLETE!
-========================================
+        SETUP COMPLETE!
 EOF
 echo ""
 echo " Next Steps:"

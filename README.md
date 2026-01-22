@@ -53,7 +53,7 @@ The project includes a Makefile to automate common deployment tasks. For detaile
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/TrafficManagementSystem.git
+   git clone https://github.com/udaykiriti/TrafficManagementSystem.git
    cd TrafficManagementSystem
    ```
 

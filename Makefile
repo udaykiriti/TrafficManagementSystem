@@ -1,11 +1,9 @@
 # AI Traffic Management System Makefile
 
-# Variables
 DC_PROD := docker-compose
 DC_DEV  := docker-compose -f docker-compose.dev.yml
 SHELL   := /bin/bash
 
-# Colors for terminal output
 BLUE   := \033[34m
 CYAN   := \033[36m
 GREEN  := \033[32m
@@ -14,7 +12,7 @@ BOLD   := \033[1m
 
 .PHONY: help setup up down logs status clean dev restart shell-backend shell-frontend
 
-# --- HELP ---
+# --- HELP --- #
 define HEADER
     ___    ____   ______ ____   ___     ______ ______  ____  ______
    /   |  /  _/  /_  __// __ \ /   |   / ____// ____/ /  _/ / ____/
@@ -41,7 +39,7 @@ help:
 	@echo -e "  $(CYAN)make shell-backend$(RESET)   Access backend container"
 	@echo -e "  $(CYAN)make shell-frontend$(RESET)  Access frontend container"
 
-# --- CORE COMMANDS ---
+# --- CORE COMMANDS --- #
 
 setup:
 	@echo -e "$(GREEN)>>> Downloading YOLO weights...$(RESET)"
@@ -77,7 +75,7 @@ clean:
 	$(DC_PROD) down -v --rmi local
 	@echo -e "$(GREEN)>>> Clean complete.$(RESET)"
 
-# --- SHELL ACCESS ---
+# --- SHELL ACCESS --- #
 
 shell-backend:
 	$(DC_PROD) exec backend bash

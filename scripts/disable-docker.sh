@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# =============================================================================
 # THE "I HATE DOCKER" SCRIPT
-# =============================================================================
 # Because sometimes you just want your RAM back.
-# =============================================================================
 
 echo "Stopping Docker services.... (Shhh, go to sleep now)"
 sudo systemctl stop docker docker.socket containerd
@@ -13,7 +10,6 @@ echo "Disabling docker auto-start... (Stay down!)"
 sudo systemctl disable docker docker.socket containerd
 
 echo ""
-echo "----------------------------------------"
 echo "  Paranoia Check (Trust issues?)"
 echo "----------------------------------------"
 
@@ -37,7 +33,7 @@ echo "Your system is now free."
 cat << "EOF"
       .
      / \
-    /   \
+    / | \
    /  |  \
   /   |   \
  /    |    \
@@ -46,5 +42,4 @@ cat << "EOF"
    DOCKER
 EOF
 
-echo "................................."
 echo "BYE BYE"

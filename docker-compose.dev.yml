@@ -10,7 +10,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      # Mount source code for hot reload
+      # mount source code for hot reload
       - ./backend:/app
       - /app/__pycache__
       # Persist data
@@ -35,7 +35,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Mount source for hot reload
+      # mount source for hot reload
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
       - /app/node_modules

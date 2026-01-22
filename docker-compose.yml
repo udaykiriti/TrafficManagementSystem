@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Backend service
+  # backend service
   backend:
     build:
       context: ./backend
@@ -28,7 +28,7 @@ services:
       retries: 3
       start_period: 40s
 
-  # Frontend service
+  # frontend service
   frontend:
     build:
       context: ./frontend
