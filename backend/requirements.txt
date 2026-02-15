@@ -27,3 +27,5 @@ pytest
 pytest-cov
 scikit-learn
 pandas
+
+opencv-python-headless
