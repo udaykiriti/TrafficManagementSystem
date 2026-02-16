@@ -53,18 +53,12 @@ print_warning() {
     echo " [ WARN ] $1"
 }
 
-# Banner
 cat << "EOF"
-  ____  _____ _____ _   _ ____  
- / ___|| ____|_   _| | | |  _ \ 
- \___ \|  _|   | | | | | |_) |
-  ___) | |___  | | | |_| |  __/
- |____/|_____| |_|  \___/|_|    
-                                
-================================
- TRAFFIC MANAGEMENT SYSTEM
-================================
+
+      T R A F F I C   M A N A G E M E N T   S Y S T E M [SET UP]
+
 EOF
+
 
 # STEP 1: Check Prerequisites
 print_step "[Wait]: Checking prerequisites..."
@@ -76,7 +70,7 @@ if command -v docker &> /dev/null; then
     DOCKER_VERSION=$(docker --version)
     print_success "[Done]: Docker installed: $DOCKER_VERSION"
 else
-    print_error "[Error]: Docker is NOT installed"
+    print_error "[Error!]: Docker is NOT installed"
     MISSING_DEPS=$((MISSING_DEPS + 1))
 fi
 
@@ -85,7 +79,7 @@ if [ -n "$DOCKER_COMPOSE_CMD" ]; then
     COMPOSE_VERSION=$($DOCKER_COMPOSE_CMD version)
     print_success "[OK]: Docker Compose installed: $COMPOSE_VERSION"
 else
-    print_error "[Error]: Docker Compose is NOT installed"
+    print_error "[Error!]: Docker Compose is NOT installed"
     MISSING_DEPS=$((MISSING_DEPS + 1))
 fi
 
