@@ -89,6 +89,15 @@ The project includes a Makefile to automate common deployment tasks. For detaile
 > http://localhost:5000/health  
 > Verify backend service status.
 
+## Documentation
+
+Full project documentation is available in the [`docs/`](docs/) directory.
+
+- [Project Overview](docs/overview.md)
+- [Docker Guide](docs/docker/README.md)
+- [Backend Documentation](docs/backend/README.md)
+- [Frontend Documentation](docs/frontend/README.md)
+
 
 ## Docker Deployment
 
