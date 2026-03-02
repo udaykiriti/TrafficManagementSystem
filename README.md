@@ -1,11 +1,15 @@
 #                   AI Traffic Management System
 
-[![Frontend](https://img.shields.io/badge/frontend-React-61dafb?logo=react&logoColor=white)](https://reactjs.org/)
-[![Backend](https://img.shields.io/badge/backend-Flask-000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![Vision](https://img.shields.io/badge/vision-YOLOv4-ff6f00)](https://github.com/AlexeyAB/darknet)
-[![Optimizer](https://img.shields.io/badge/optimizer-C%2B%2B17-00599c?logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
-[![Container](https://img.shields.io/badge/infra-Docker-2496ed?logo=docker&logoColor=white)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Backend-Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
+  <img src="https://img.shields.io/badge/Computer_Vision-YOLOv4-FF6F00?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Optimization-C++17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
+  <img src="https://img.shields.io/badge/Parallelism-OpenMP-00979D?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Containerization-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/Web_Server-Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" />
+</p>
 
 ## Overview
 
