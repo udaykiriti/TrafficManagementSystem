@@ -12,7 +12,7 @@ WEIGHTS_FILE = os.path.join(BASE_DIR, 'yolov4-tiny.weights')
 
 CONF_THRESHOLD = 0.35
 NMS_THRESHOLD = 0.5
-INPUT_SIZE = 416 
+INPUT_SIZE = 320 
 VEHICLE_CLASSES = {'car', 'motorbike', 'bus', 'truck', 'bicycle'}
 
 COLORS = {
