@@ -12,7 +12,8 @@ WEIGHTS_FILE = os.path.join(BASE_DIR, 'yolov4-tiny.weights')
 
 CONF_THRESHOLD = 0.35
 NMS_THRESHOLD = 0.5
-INPUT_SIZE = 320 
+INPUT_SIZE = 320
+MIN_BOX_AREA = 400  # Filter out tiny detections 
 VEHICLE_CLASSES = {'car', 'motorbike', 'bus', 'truck', 'bicycle'}
 
 COLORS = {
@@ -112,11 +113,14 @@ def process_video(input_path, output_path):
         for classid, score, box in zip(classes, scores, boxes):
             class_name = class_names[classid]
             if class_name in VEHICLE_CLASSES:
+                x, y, w, h = box
+                # Filter out tiny detections (likely false positives)
+                if w * h < MIN_BOX_AREA:
+                    continue
                 vehicle_count += 1
                 color = COLORS.get(class_name, (0, 255, 0))
                 
                 # Draw bounding box
-                x, y, w, h = box
                 cv.rectangle(frame, (x, y), (x + w, y + h), color, 2)
                 
                 # Draw label

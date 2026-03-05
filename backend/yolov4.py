@@ -35,6 +35,7 @@ MAX_PARALLEL_WORKERS = min(3, max(1, mp.cpu_count() - 1))     # Limit to prevent
 
 # <!--- Target classes (COCO) ---->
 VEHICLE_CLASSES = {'car', 'motorbike', 'bus', 'truck', 'bicycle'}
+MIN_BOX_AREA = 400  # Filter out tiny detections (20x20 px = likely false positives)
 
 
 def get_optimal_backend():
@@ -125,7 +126,13 @@ def _detect_cars_worker(video_file, result_queue, worker_id):
                 frame_resized = cv.resize(frame, (INPUT_SIZE, INPUT_SIZE))
                 # <!--- Detect vehicles in frame (all types: car, truck, bus, motorbike, bicycle) --->
                 classes, scores, boxes = model.detect(frame_resized, CONF_THRESHOLD, NMS_THRESHOLD)
-                vehicle_count = sum(1 for cid in classes if class_names[cid] in VEHICLE_CLASSES)
+                # <!--- Filter detections: only count vehicles with sufficient size --->
+                vehicle_count = 0
+                for cid, box in zip(classes, boxes):
+                    if class_names[cid] in VEHICLE_CLASSES:
+                        x, y, w, h = box
+                        if w * h >= MIN_BOX_AREA:  # Filter tiny detections
+                            vehicle_count += 1
                 car_counts.append(vehicle_count)
                 processed_count += 1
                 
