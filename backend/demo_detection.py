@@ -120,6 +120,13 @@ def process_video(input_path, output_path):
         
         # Extract ROI to focus on traffic lanes
         frame_roi, roi_coords = extract_roi(frame)
+        roi_x1, roi_y1, roi_x2, roi_y2 = roi_coords
+        
+        # Get dimensions for coordinate scaling
+        roi_h = roi_y2 - roi_y1
+        roi_w = roi_x2 - roi_x1
+        scale_x = roi_w / INPUT_SIZE
+        scale_y = roi_h / INPUT_SIZE
         
         # Resize ROI for faster processing
         frame_resized = cv.resize(frame_roi, (INPUT_SIZE, INPUT_SIZE))
@@ -136,17 +143,24 @@ def process_video(input_path, output_path):
                 # Filter out tiny detections (likely false positives)
                 if w * h < MIN_BOX_AREA:
                     continue
+                
+                # Scale coordinates back to original frame
+                x_orig = int(x * scale_x) + roi_x1
+                y_orig = int(y * scale_y) + roi_y1
+                w_orig = int(w * scale_x)
+                h_orig = int(h * scale_y)
+                
                 vehicle_count += 1
                 color = COLORS.get(class_name, (0, 255, 0))
                 
-                # Draw bounding box
-                cv.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+                # Draw bounding box on original frame
+                cv.rectangle(frame, (x_orig, y_orig), (x_orig + w_orig, y_orig + h_orig), color, 2)
                 
                 # Draw label
                 label = f"{class_name}: {score:.2f}"
                 label_size, _ = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                cv.rectangle(frame, (x, y - 20), (x + label_size[0], y), color, -1)
-                cv.putText(frame, label, (x, y - 5), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+                cv.rectangle(frame, (x_orig, y_orig - 20), (x_orig + label_size[0], y_orig), color, -1)
+                cv.putText(frame, label, (x_orig, y_orig - 5), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
         
         total_vehicles += vehicle_count
         max_vehicles = max(max_vehicles, vehicle_count)
